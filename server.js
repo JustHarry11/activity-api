@@ -2,27 +2,24 @@ import express from 'express'
 import morgan from 'morgan'
 import 'dotenv/config'
 import mongoose from 'mongoose'
+import cors from 'cors'
 
 import authRouter from './controllers/auth.js'
-import isSignedIn from './middleware/isSignedIn.js'
+import activityRouter from './controllers/activities.js'
 
 const app = express()
 const port = process.env.PORT
 
 
 // * Middleware
+app.use(cors())
 app.use(express.json()) // Parses JSON bodies to req.body
 app.use(morgan('dev'))
 
 
 // * Routers
 app.use('/api', authRouter)
-
-
-app.get('/api/test-route', isSignedIn, (req, res) => {
-    console.log('USER INSIDE THE FINAL CONTROLLER', req.user)
-    return res.json(req.user)
-})
+app.use('/api', activityRouter)
 
 // * 404 Route
 app.use('/{*app}', (req, res) => {

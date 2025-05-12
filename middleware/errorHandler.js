@@ -28,6 +28,10 @@ export default function errorHandler(err, res) {
         return res.status(401).json({ message: 'Unauthorized' })
     }
 
+    if(name === 'CastError' && kind === 'ObjectId') {
+        return res.status(422).json({ message: 'Invalid ObjectId' })
+    }
+
     // * All custom error responses
     return res.status(status).json({ [field]: message })
 }
